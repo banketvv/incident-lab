@@ -1,0 +1,33 @@
+{
+  "name": "@hexlet/incident-lab",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "packageManager": "pnpm@12.11.2",
+  "engines": {
+    "node": ">=26"
+  },
+  "scripts": {
+    "start": "node src/server.ts",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "lint": "pnpm typecheck && oxlint . && oxfmt --check .",
+    "format": "oxfmt .",
+    "traffic": "node scripts/traffic.ts",
+    "events": "node scripts/events.ts"
+  },
+  "dependencies": {
+    "@sentry/node": "11.9.0"
+  },
+  "devDependencies": {
+    "@types/node": "26.6.5",
+    "knip": "6.43.0",
+    "oxfmt": "0.74.0",
+    "oxlint": "1.89.0",
+    "stylelint": "17.16.0",
+    "stylelint-config-standard": "40.0.0",
+    "typescript": "7.0.2",
+    "vitest": "5.0.5"
+  }
+}

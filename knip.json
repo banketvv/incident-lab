@@ -1,0 +1,4 @@
+{
+  "entry": ["public/app.js", "scripts/*.ts"],
+  "project": ["src/**/*.ts", "public/*.js", "scripts/*.ts", "tests/**/*.ts"]
+}

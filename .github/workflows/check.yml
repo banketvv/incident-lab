@@ -1,0 +1,49 @@
+name: Check
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: jdx/mise-action@82a612c5ab8bcda7cc5db6b7e81a8e7584c3dc6e # v5.2.3
+      - run: mise run setup
+      - run: mise run check
+      - name: Commit messages
+        shell: bash
+        env:
+          FROM: ${{ github.event.pull_request.base.sha || github.event.before }}
+          TO: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          if [ "$FROM" = "0000000000000000000000000000000000000000" ]; then
+            # GitHub generates this commit when creating a repository from a template.
+            if [ "$(git rev-list --count "$TO")" != "1" ] || [ "$(git log -1 --format=%s "$TO")" != "Initial commit" ]; then
+              git log -1 --format=%B "$TO" | commitlint
+            fi
+          else
+            commitlint --from "$FROM" --to "$TO"
+          fi
+      - name: Secrets
+        run: betterleaks dir --no-banner .
+      - name: Dependency vulnerabilities
+        run: osv-scanner scan --lockfile pnpm-lock.yaml
+      - name: Container smoke
+        run: |
+          make up
+          make traffic
+          docker compose run --rm --no-deps app pnpm test
+      - name: Stop containers
+        if: always()
+        run: docker compose down

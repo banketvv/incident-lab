@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Магазин инженера</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <main>
+      <header>
+        <span>INCIDENT LAB</span>
+        <h1>Магазин инженера</h1>
+        <p>Книги и вещи для тех, кто создаёт программы.</p>
+      </header>
+      <form id="search">
+        <label for="term">Найти в каталоге</label>
+        <div class="row">
+          <input id="term" name="term" value="Книга" required /><button>Найти</button>
+        </div>
+      </form>
+      <section id="products" aria-label="Каталог"></section>
+      <section class="actions">
+        <h2>Корзина</h2>
+        <p>Посмотрите текущую корзину или вернитесь к сохранённой.</p>
+        <div class="row">
+          <button id="cart">Текущая корзина</button
+          ><button id="saved-cart" class="secondary">Сохранённая корзина</button>
+        </div>
+      </section>
+      <section class="actions">
+        <h2>Оформить заказ</h2>
+        <p>В заказе одна книга об архитектуре. Промокод необязателен, WELCOME даёт скидку 10%.</p>
+        <form id="checkout">
+          <label for="coupon">Промокод</label>
+          <div class="row">
+            <input id="coupon" name="coupon" placeholder="По желанию" /><button>
+              Оформить заказ
+            </button>
+          </div>
+        </form>
+      </section>
+      <section class="response">
+        <h2 id="status" aria-live="polite">Загрузка каталога</h2>
+        <pre id="output"></pre>
+      </section>
+    </main>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>
